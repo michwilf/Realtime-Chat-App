@@ -8,11 +8,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-const page = async ({}) => {
+const page = async () => {
   const session = await getServerSession(authOptions)
   if (!session) notFound()
 
   const friends = await getFriendsByUserId(session.user.id)
+  console.log(friends)
 
   const friendsWithLastMessage = await Promise.all(
     friends.map(async (friend) => {
@@ -23,7 +24,9 @@ const page = async ({}) => {
         -1
       )) as string[]
 
-      const lastMessage = JSON.parse(lastMessageRaw) as Message
+
+        const lastMessage = JSON.parse(lastMessageRaw) as Message;
+        console.log(lastMessage)
 
       return {
         ...friend,

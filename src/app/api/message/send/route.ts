@@ -22,6 +22,8 @@ export async function POST(req: Request) {
 
     const friendId = session.user.id === userId1 ? userId2 : userId1
 
+    console.log(`Sending message from ${session.user.id} to ${friendId}`)
+
     const friendList = (await fetchRedis(
       'smembers',
       `user:${session.user.id}:friends`
@@ -38,6 +40,8 @@ export async function POST(req: Request) {
     )) as string
     const sender = JSON.parse(rawSender) as User
 
+    console.log(`Sender: ${JSON.stringify(sender)}`)
+
     const timestamp = Date.now()
 
     const messageData: Message = {
@@ -48,6 +52,7 @@ export async function POST(req: Request) {
     }
 
     const message = messageValidator.parse(messageData)
+    console.log(`Message: ${JSON.stringify(message)}`)
 
     // notify all connected chat room clients
     await pusherServer.trigger(toPusherKey(`chat:${chatId}`), 'incoming-message', message)
@@ -63,6 +68,8 @@ export async function POST(req: Request) {
       score: timestamp,
       member: JSON.stringify(message),
     })
+
+    console.log(`New message from ${session.user.id} to ${friendId}`)
 
     return new Response('OK')
   } catch (error) {
