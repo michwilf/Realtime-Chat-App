@@ -3,7 +3,7 @@
 
 Description:
 
--Realtime React chat application built using typescript, upstash redis, NextJS 13, and bootstrap. 
+-Realtime React chat application built using typescript, upstash redis, NextJS 13, and TailwindCSS. 
 
 
 Video Summary:
